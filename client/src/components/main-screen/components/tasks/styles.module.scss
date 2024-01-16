@@ -1,0 +1,57 @@
+.container {
+  height: 100%;
+  width: 50%;
+  min-width: 800px;
+  border-radius: 12px;
+  background-color: #fcfcfc;
+  box-shadow: 0px 0px 71px -9px rgba(0, 0, 0, 0.75);
+  z-index: 1;
+  padding: 16px;
+  overflow-y: hidden;
+  color: black;
+}
+
+.titleBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100px;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.filterButton {
+  background-color: #fe7183;
+  border-radius: 24px;
+
+  &:hover {
+    border: 1px solid red;
+  }
+}
+
+.addButton {
+  border-radius: 24px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.itemContainer {
+  height: calc(100% - 100px);
+  display: grid;
+  overflow-y: scroll;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 16px;
+}
+
+.item {
+  height: 200px;
+  padding: 16px;
+  border-radius: 24px;
+}
