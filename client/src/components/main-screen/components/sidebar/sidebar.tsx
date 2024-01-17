@@ -16,7 +16,7 @@ const Sidebar = ({ isFiltersOpen }: ElementProps) => {
     <div className={getClassName()}>
       <div className={styles.itemContainer}>
         {isFiltersOpen &&
-          Array(80)
+          Array(3)
             .fill(1)
             .map((_item, index) => (
               <button key={index} className={styles.item}>
