@@ -1,8 +1,8 @@
-import Sidebar from './components/sidebar';
+import { useState } from 'react';
 import AddTask from './components/add-task';
+import Sidebar from './components/sidebar';
 import Tasks from './components/tasks';
 import styles from './styles.module.scss';
-import { useState } from 'react';
 
 const MainScreen = () => {
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
