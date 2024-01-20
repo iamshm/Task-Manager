@@ -1,6 +1,9 @@
 import { FormEvent, useState } from 'react';
+import { SingleValue } from 'react-select';
+import ReactSelectCreatable from 'react-select/creatable';
 import createNotes from '../../../../apis/create-note';
 import { useAppConfigContext } from '../../../../context/app-config-context';
+import { useDataContext } from '../../../../context/data-context';
 import { getRandomHexColor } from '../../../../utils/generate-random-colors';
 import ResizeableTextarea from './components/resizeable-textarea';
 import styles from './styles.module.scss';
@@ -8,11 +11,18 @@ import styles from './styles.module.scss';
 interface FormProps {
   title: string;
   description: string;
+  tag: string;
+}
+
+interface OptionSelect {
+  label: string;
+  value: string;
 }
 
 const INITIAL_STATE: FormProps = {
   title: '',
   description: '',
+  tag: '',
 };
 
 const AddTask = () => {
@@ -20,6 +30,8 @@ const AddTask = () => {
     appConfig: { userUuid, isTaskDrawerOpen: isAddTaskOpen },
     toggleTaskDrawer: onClose,
   } = useAppConfigContext();
+
+  const { tags: tagsFromContext } = useDataContext();
 
   const [formValues, setFormValues] = useState<FormProps>(INITIAL_STATE);
 
@@ -30,11 +42,18 @@ const AddTask = () => {
     return `${styles.container} ${styles.exit}`;
   };
 
+  const options = tagsFromContext.map((tag) => {
+    return {
+      label: tag.category,
+      value: tag.category,
+    };
+  });
+
   const addTask = async () => {
     await createNotes({
       userUuid,
       payload: {
-        category: '',
+        category: formValues.tag,
         title: formValues.title,
         description: formValues.description,
         color: getRandomHexColor(),
@@ -44,6 +63,7 @@ const AddTask = () => {
     setFormValues({
       title: '',
       description: '',
+      tag: '',
     });
 
     onClose();
@@ -51,6 +71,35 @@ const AddTask = () => {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+  };
+
+  const getValue = (value?: string) => {
+    if (!value) return null;
+
+    return {
+      label: value,
+      value,
+    };
+  };
+
+  const handleTagChange = (selectedOption: SingleValue<OptionSelect>) => {
+    if (!selectedOption) return;
+
+    setFormValues((prev) => {
+      return {
+        ...prev,
+        tag: selectedOption.value,
+      };
+    });
+  };
+
+  const handleCreateOption = (tag: string) => {
+    setFormValues((prev) => {
+      return {
+        ...prev,
+        tag,
+      };
+    });
   };
 
   return (
@@ -89,6 +138,14 @@ const AddTask = () => {
         </div>
 
         <div className={styles.actionContainer}>
+          <ReactSelectCreatable
+            options={options}
+            value={getValue(formValues.tag)}
+            onChange={(newValue) => handleTagChange(newValue)}
+            onCreateOption={handleCreateOption}
+            placeholder="Select or create tags..."
+          />
+
           <button disabled={!formValues.title.length} onClick={addTask}>
             Add Task
           </button>

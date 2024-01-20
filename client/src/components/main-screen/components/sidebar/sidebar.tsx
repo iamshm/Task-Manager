@@ -22,7 +22,7 @@ const Sidebar = () => {
         {isFilterDrawerOpen &&
           tags.map((item, index) => (
             <button key={index} className={styles.item}>
-              {item.category}
+              {!item.category ? 'Untagged' : item.category}
             </button>
           ))}
       </div>
