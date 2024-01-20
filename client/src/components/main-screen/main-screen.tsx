@@ -1,31 +1,19 @@
-import { useState } from 'react';
 import AddTask from './components/add-task';
 import Sidebar from './components/sidebar';
 import Tasks from './components/tasks';
 import styles from './styles.module.scss';
 
 const MainScreen = () => {
-  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
-  const toggleAddTask = () => {
-    setIsAddTaskOpen(!isAddTaskOpen);
-  };
-
-  const toggleFilters = () => {
-    setIsFiltersOpen(!isFiltersOpen);
-  };
-
   return (
     <div className={styles.container}>
       <p className={styles.logoText}>Noted</p>
 
       <div className={styles.content}>
-        <Sidebar isFiltersOpen={isFiltersOpen} />
+        <Sidebar />
 
-        <Tasks toggleAddTask={toggleAddTask} toggleFilters={toggleFilters} />
+        <Tasks />
 
-        <AddTask isAddTaskOpen={isAddTaskOpen} onClose={toggleAddTask} />
+        <AddTask />
       </div>
     </div>
   );

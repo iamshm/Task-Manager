@@ -4,8 +4,8 @@ interface FetchMyNotesProps {
   userUuid: string;
 }
 
-const fetchMyNotes = async ({ userUuid }: FetchMyNotesProps) => {
-  const res = await NotesApi.get(`/api/notes`, {
+const fetchTags = async ({ userUuid }: FetchMyNotesProps) => {
+  const res = await NotesApi.get(`/api/notes/tags`, {
     params: {
       userUuid,
     },
@@ -14,4 +14,4 @@ const fetchMyNotes = async ({ userUuid }: FetchMyNotesProps) => {
   return res.data;
 };
 
-export default fetchMyNotes;
+export default fetchTags;

@@ -1,12 +1,16 @@
+import { useAppConfigContext } from '../../../../context/app-config-context';
 import styles from './styles.module.scss';
+import { useDataContext } from '../../../../context/data-context';
 
-interface ElementProps {
-  isFiltersOpen: boolean;
-}
+const Sidebar = () => {
+  const {
+    appConfig: { isFilterDrawerOpen },
+  } = useAppConfigContext();
 
-const Sidebar = ({ isFiltersOpen }: ElementProps) => {
+  const { tags } = useDataContext();
+
   const getClassName = () => {
-    if (isFiltersOpen) {
+    if (isFilterDrawerOpen) {
       return `${styles.container} ${styles.entry}`;
     }
     return `${styles.container} ${styles.exit}`;
@@ -15,14 +19,12 @@ const Sidebar = ({ isFiltersOpen }: ElementProps) => {
   return (
     <div className={getClassName()}>
       <div className={styles.itemContainer}>
-        {isFiltersOpen &&
-          Array(3)
-            .fill(1)
-            .map((_item, index) => (
-              <button key={index} className={styles.item}>
-                {index}
-              </button>
-            ))}
+        {isFilterDrawerOpen &&
+          tags.map((item, index) => (
+            <button key={index} className={styles.item}>
+              {item.category}
+            </button>
+          ))}
       </div>
     </div>
   );

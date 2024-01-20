@@ -1,25 +1,26 @@
 import { FormEvent, useState } from 'react';
+import createNotes from '../../../../apis/create-note';
+import { useAppConfigContext } from '../../../../context/app-config-context';
+import { getRandomHexColor } from '../../../../utils/generate-random-colors';
 import ResizeableTextarea from './components/resizeable-textarea';
 import styles from './styles.module.scss';
-
-interface ElementProps {
-  isAddTaskOpen: boolean;
-  onClose: () => void;
-}
 
 interface FormProps {
   title: string;
   description: string;
-  completed: boolean;
 }
 
 const INITIAL_STATE: FormProps = {
   title: '',
   description: '',
-  completed: false,
 };
 
-const AddTask = ({ isAddTaskOpen, onClose }: ElementProps) => {
+const AddTask = () => {
+  const {
+    appConfig: { userUuid, isTaskDrawerOpen: isAddTaskOpen },
+    toggleTaskDrawer: onClose,
+  } = useAppConfigContext();
+
   const [formValues, setFormValues] = useState<FormProps>(INITIAL_STATE);
 
   const getClassName = () => {
@@ -29,17 +30,22 @@ const AddTask = ({ isAddTaskOpen, onClose }: ElementProps) => {
     return `${styles.container} ${styles.exit}`;
   };
 
-  const handleCompletionToggle = () => {
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        completed: !prev.completed,
-      };
+  const addTask = async () => {
+    await createNotes({
+      userUuid,
+      payload: {
+        category: '',
+        title: formValues.title,
+        description: formValues.description,
+        color: getRandomHexColor(),
+      },
     });
-  };
 
-  const addTask = () => {
-    console.log('task added', formValues);
+    setFormValues({
+      title: '',
+      description: '',
+    });
+
     onClose();
   };
 
@@ -83,11 +89,9 @@ const AddTask = ({ isAddTaskOpen, onClose }: ElementProps) => {
         </div>
 
         <div className={styles.actionContainer}>
-          <button onClick={handleCompletionToggle}>
-            {formValues.completed ? 'Mark as Pending' : 'Mark as Completed'}
+          <button disabled={!formValues.title.length} onClick={addTask}>
+            Add Task
           </button>
-
-          <button onClick={addTask}>Add Task</button>
         </div>
       </form>
     </div>

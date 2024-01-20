@@ -20,7 +20,7 @@ model User {
 
 model Notes {
   id          Int     @id @default(autoincrement())
-  uuid        String  @default(uuid())
+  uuid        String  @unique @default(uuid())
   category    String?
   title       String
   description String?

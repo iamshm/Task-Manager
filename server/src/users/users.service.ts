@@ -7,3 +7,11 @@ export const getOneUser = async (uuid: string) => {
     },
   });
 };
+
+export const createUser = async (uuid: string) => {
+  return db.user.create({
+    data: {
+      uuid,
+    },
+  });
+};
