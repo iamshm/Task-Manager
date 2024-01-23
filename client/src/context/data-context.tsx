@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import fetchMyNotes from '../apis/fetch-my-notes';
-import { useAppConfigContext } from './app-config-context';
 import fetchTags from '../apis/fetch-tags';
+import { useAppConfigContext } from './app-config-context';
 
 export interface Notes {
   category: string;
@@ -26,6 +26,10 @@ const DataContext = createContext<DataContextPros>({
   tags: [],
   isLoading: false,
 });
+
+// TODO : To create a state that handles the selected tag and we pass that selected tag to the fetchNotes
+// api call, and we run the useEffect that has fetchNotes in it by ading selected tag as a dependency
+// or we directly call the api and setNotes list with the respinse
 
 const DataContextProvider = ({ children }: { children: ReactNode }) => {
   const [notesList, setNotesList] = useState<Notes[]>([]);
