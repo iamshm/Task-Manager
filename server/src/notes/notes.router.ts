@@ -6,8 +6,9 @@ export const notesRouter = express.Router();
 notesRouter.get("/", async (req: Request, res: Response) => {
   try {
     const userUuid = req.query.userUuid as string;
+    const category = req.query.tagName as string;
 
-    const notes = await NotesService.listnotes(userUuid);
+    const notes = await NotesService.listnotes(userUuid, category);
 
     if (!notes) {
       throw new Error();
@@ -41,7 +42,7 @@ notesRouter.post("/", async (req: Request, res: Response) => {
 
     const note = await NotesService.createNote(
       requestedData.userUuid,
-      requestedData.payload
+      requestedData.payload,
     );
 
     if (!note) throw new Error();
@@ -59,7 +60,7 @@ notesRouter.put("/", async (req: Request, res: Response) => {
     const note = await NotesService.updateNote(
       requestedData.userUuid,
       requestedData.payload,
-      requestedData.noteUuid
+      requestedData.noteUuid,
     );
 
     if (!note) throw new Error();
@@ -76,7 +77,7 @@ notesRouter.delete("/", async (req: Request, res: Response) => {
 
     await NotesService.deleteNote(
       requestedData.userUuid,
-      requestedData.noteUuid
+      requestedData.noteUuid,
     );
 
     return res.status(200).json();

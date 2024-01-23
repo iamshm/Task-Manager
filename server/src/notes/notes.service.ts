@@ -1,7 +1,7 @@
 import { db } from "../utils/db.server";
 import * as UsersService from "../users/users.service";
 
-export const listnotes = async (userUuid: string) => {
+export const listnotes = async (userUuid: string, category?: string) => {
   const user = await UsersService.getOneUser(userUuid);
 
   if (!user) return;
@@ -9,6 +9,7 @@ export const listnotes = async (userUuid: string) => {
   return await db.notes.findMany({
     where: {
       userId: user.id,
+      category,
     },
     select: {
       id: true,
